@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Drawer } from "antd";
-import AddBrandForm from "../forms/addBrandForm";
+import AddBrandForm from "../forms/AddBrandForm";
 import AddPortfolioForm from "../forms/PortfolioForm";
 import AddFeaturedForm from "../forms/AddFeatured";
 
