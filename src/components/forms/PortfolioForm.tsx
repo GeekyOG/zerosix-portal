@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../ui/Button";
 import Dropzone from "react-dropzone";
 import { cn } from "../../utils/cn";
