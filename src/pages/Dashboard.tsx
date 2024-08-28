@@ -9,7 +9,10 @@ import {
   useGetOverviewQuery,
   useLazyGetOverviewQuery,
 } from "../api/overviewApi";
-import { useGetAllPortfolioQuery } from "../api/portfolio";
+import {
+  useGetAllPortfolioQuery,
+  useLazyGetAllPortfolioQuery,
+} from "../api/portfolio";
 import DashboardDrawer from "../components/dashboard/Drawer";
 
 function Dashboard() {
@@ -18,15 +21,18 @@ function Dashboard() {
   const [getOverview, { isFetching: overviewLoading, data: overviewData }] =
     useLazyGetOverviewQuery();
 
+  const [getAllPortfolio, { data: portfolioData, isFetching }] =
+    useLazyGetAllPortfolioQuery();
+
   useEffect(() => {
+    getAllPortfolio("");
     getOverview("");
   }, []);
 
   const handleGetOverview = () => {
     getOverview("");
+    getAllPortfolio("");
   };
-
-  const { data: portfolioData, isFetching } = useGetAllPortfolioQuery("");
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [whatForm, setWhatForm] = useState("");
