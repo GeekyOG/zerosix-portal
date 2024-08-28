@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
 import AuthLayout from "../layout/AuthLayout";
-import AppLayout from "../layout/AppLayout";
 import Login from "../pages/Login";
 import React from "react";
 import Dashboard from "../pages/Dashboard";
@@ -10,6 +9,7 @@ import Brands from "../pages/Brands";
 import Featured from "../pages/Featured";
 import Portfolio from "../pages/Portfolio";
 import Settings from "../pages/Settings";
+import Applayout from "../layout/Applayout";
 
 const router = createBrowserRouter([
   {
@@ -24,9 +24,9 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: (
-      // <PrivateRoute>
-      <AppLayout />
-      // </PrivateRoute>
+      <PrivateRoute>
+        <Applayout />
+      </PrivateRoute>
     ),
     children: [
       {

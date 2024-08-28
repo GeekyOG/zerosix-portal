@@ -19,8 +19,6 @@ function Settings() {
 
   const [getLogo, { data, isSuccess }] = useLazyGetLogoQuery();
 
-  console.log(data[0]);
-
   useEffect(() => {
     getLogo("");
   }, []);
