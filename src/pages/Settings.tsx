@@ -9,6 +9,10 @@ import { toast } from "react-toastify";
 import { Image } from "lucide-react";
 import Input from "../components/input/Input";
 import { useLazyGetLogoQuery, useUpdateLogoMutation } from "../api/logoApi";
+import {
+  useGetAllSocialQuery,
+  useUpdateSocialMutation,
+} from "../api/socialApi";
 
 function Settings() {
   const [imageError, setImageError] = useState("");
@@ -23,6 +27,9 @@ function Settings() {
     getLogo("");
   }, []);
 
+  const { data: socialData } = useGetAllSocialQuery("");
+  const [updateSocial, { isLoading: updateSocialLoading }] =
+    useUpdateSocialMutation();
   return (
     <Container className="pb-[200px]">
       <div className="mt-[26px]">
@@ -138,49 +145,78 @@ function Settings() {
           <div className=" max-w-[400px]">
             <Formik
               initialValues={{
-                email: "",
-                password: "",
+                instagram: socialData ? socialData[0].instagram ?? "" : null,
+                youtube: socialData ? socialData[0].youtube ?? "" : null,
+                twitter: socialData ? socialData[0].twitter ?? "" : null,
+                pinterest: socialData ? socialData[0].pinterest ?? "" : null,
               }}
-              onSubmit={(values) => {}}
+              onSubmit={(values) => {
+                updateSocial({
+                  id: 1,
+                  instagram: values.instagram,
+                  youtube: values.youtube,
+                  twitter: values.twitter,
+                  pinterest: values.pinterest,
+                })
+                  .unwrap()
+                  .then(() => {
+                    toast.success("Action successful");
+                  })
+                  .catch((err) => {
+                    toast.error(err.data.msg ?? "Something went wrong");
+                  });
+              }}
             >
-              {({ errors, touched }) => (
-                <Form className="flex flex-col gap-[8px] mt-5">
-                  <Input
-                    title="Instagram"
-                    errors={errors.email}
-                    name="instagram"
-                    touched={touched.email}
-                    placeholder="Enter your email address"
-                  />
+              {({ errors, touched, values }) => {
+                useEffect(() => {
+                  values.instagram = socialData ? socialData[0]?.instagram : "";
 
-                  <Input
-                    title="Youtube"
-                    errors={errors.email}
-                    name="instagram"
-                    touched={touched.email}
-                    placeholder="Enter your email address"
-                  />
+                  values.youtube = socialData ? socialData[0]?.youtube : "";
+                  values.twitter = socialData ? socialData[0]?.twitter : "";
+                  values.pinterest = socialData ? socialData[0]?.pinterest : "";
+                }, [socialData]);
+                return (
+                  <Form className="flex flex-col gap-[8px] mt-5">
+                    <Input
+                      title="Instagram"
+                      errors={errors.instagram}
+                      name="instagram"
+                      touched={touched.instagram}
+                      placeholder="Enter your email address"
+                    />
 
-                  <Input
-                    title="Twitter"
-                    errors={errors.email}
-                    name="instagram"
-                    touched={touched.email}
-                    placeholder="Enter your email address"
-                  />
-                  <Input
-                    title="Pinterest"
-                    errors={errors.email}
-                    name="instagram"
-                    touched={touched.email}
-                    placeholder="Enter your email address"
-                  />
+                    <Input
+                      title="Youtube"
+                      errors={errors.youtube}
+                      name="youtube"
+                      touched={touched.youtube}
+                      placeholder="Enter your email address"
+                    />
 
-                  <Button className="mt-[15px] h-[56px] w-[100%]">
-                    <p>Submit</p>
-                  </Button>
-                </Form>
-              )}
+                    <Input
+                      title="Twitter"
+                      errors={errors.twitter}
+                      name="twitter"
+                      touched={touched.twitter}
+                      placeholder="Enter your email address"
+                    />
+                    <Input
+                      title="Pinterest"
+                      errors={errors.pinterest}
+                      name="pinterest"
+                      touched={touched.pinterest}
+                      placeholder="Enter your email address"
+                    />
+
+                    <Button
+                      isLoading={updateSocialLoading}
+                      className="mt-[15px] h-[56px] w-[100%]"
+                    >
+                      <p>Submit</p>
+                    </Button>
+                  </Form>
+                );
+              }}
             </Formik>
           </div>
         </div>

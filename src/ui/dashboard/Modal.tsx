@@ -53,7 +53,7 @@ function DialogContainer({
             <img
               src={image}
               alt=""
-              className="absolute bottom-0 left-0 right-0 mx-auto h-[260px]"
+              className="absolute bottom-0 left-0 right-0 mx-auto h-[140px]"
             />
           </div>
           <p className="pt-[48px] font-[600] text-center">{title}</p>

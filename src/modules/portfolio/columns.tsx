@@ -15,6 +15,7 @@ export const columns: ColumnsType = [
     title: "Title",
     dataIndex: "title",
     key: "title",
+    render: (value) => <p>{value ?? ""}</p>,
   },
 
   {
