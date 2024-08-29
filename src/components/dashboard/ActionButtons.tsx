@@ -126,7 +126,10 @@ function ActionButtons({ id, type, callBackAction }: ActionButtonsProps) {
       )}
       <DashboardDrawer
         id={id}
-        callBackAction={callBackAction}
+        callBackAction={() => {
+          setDrawerOpen(false);
+          if (callBackAction) callBackAction();
+        }}
         open={drawerOpen}
         setOpen={setDrawerOpen}
         whatForm={type}

@@ -21,6 +21,7 @@ function Featured() {
 
   const handleGetAllFeatured = () => {
     getAllFeatured("");
+    setDrawerOpen(false);
   };
   return (
     <Container className="pb-[200px]">

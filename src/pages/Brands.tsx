@@ -23,6 +23,7 @@ function Brands() {
 
   const handleGetBrands = () => {
     getBrands("");
+    setDrawerOpen(false);
   };
 
   return (

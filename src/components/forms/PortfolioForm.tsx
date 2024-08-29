@@ -80,14 +80,12 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
                 .unwrap()
                 .then(() => {
                   resetForm();
+                  setDisplay("");
+                  setDescription("");
                   toast.success("Action successful");
                   if (callBackAction) {
                     callBackAction();
                   }
-                  resetForm();
-                  setImage("");
-                  setDisplay("");
-                  setImageError("");
                 })
                 .catch((err) => {
                   toast.error(err.message ?? "Something went wrong");

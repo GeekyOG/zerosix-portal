@@ -21,6 +21,7 @@ function Portfolio() {
 
   const handleGetPortfolio = () => {
     getAllPortfolio("");
+    setDrawerOpen(false);
   };
   return (
     <Container className="pb-[200px]">

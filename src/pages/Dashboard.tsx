@@ -24,18 +24,19 @@ function Dashboard() {
   const [getAllPortfolio, { data: portfolioData, isFetching }] =
     useLazyGetAllPortfolioQuery();
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [whatForm, setWhatForm] = useState("");
+
   useEffect(() => {
     getAllPortfolio("");
     getOverview("");
   }, []);
 
   const handleGetOverview = () => {
+    setDrawerOpen(false);
     getOverview("");
     getAllPortfolio("");
   };
-
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [whatForm, setWhatForm] = useState("");
 
   const handleAddBrand = () => {
     setDrawerOpen(true);
@@ -93,6 +94,7 @@ function Dashboard() {
           data={portfolioData ?? []}
           isFetching={isFetching}
           type="Portfolio"
+          callBackAction={handleGetOverview}
         />
       </div>
       <DashboardDrawer
