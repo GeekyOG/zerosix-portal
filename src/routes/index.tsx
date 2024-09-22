@@ -10,6 +10,7 @@ import Featured from "../pages/Featured";
 import Portfolio from "../pages/Portfolio";
 import Settings from "../pages/Settings";
 import Applayout from "../layout/Applayout";
+import WhatWeOffer from "../pages/WhatWeOffer";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/portfolio",
         element: <Portfolio />,
+      },
+      {
+        path: "/dashboard/what-we-offer",
+        element: <WhatWeOffer />,
       },
       {
         path: "/dashboard/settings",

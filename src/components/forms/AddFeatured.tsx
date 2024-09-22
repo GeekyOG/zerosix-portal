@@ -27,6 +27,9 @@ const AddFeaturedForm: React.FC<AddFeaturedFormProps> = ({
   const [imageError, setImageError] = useState("");
   const [image, setImage] = useState<any>("");
   const [display, setDisplay] = useState("");
+  const [videoError, setVideoError] = useState("");
+  const [video, setVideo] = useState<any>("");
+  const [displaVideo, setDisplayVideo] = useState("");
   const [description, setDescription] = useState("");
 
   const [addFeatured, { isLoading }] = useAddFeaturedMutation();
@@ -45,6 +48,8 @@ const AddFeaturedForm: React.FC<AddFeaturedFormProps> = ({
         .then(() => {});
     }
   }, [id, featuredLoading, reset, data]);
+
+  console.log(video);
 
   return (
     <div>
@@ -68,7 +73,7 @@ const AddFeaturedForm: React.FC<AddFeaturedFormProps> = ({
             formData.append("image", image);
             formData.append("title", values.title);
             formData.append("description", description);
-            formData.append("videoUrl", values.videoUrl);
+            formData.append("video", video);
 
             if (id) {
               updateFeatured({ body: formData, id })
@@ -132,14 +137,6 @@ const AddFeaturedForm: React.FC<AddFeaturedFormProps> = ({
                   touched={touched.title}
                   errors={errors.title}
                   placeholder="Enter title"
-                  width="h-[36px] w-[100%] rounded-[5px]"
-                />
-
-                <Input
-                  title="Video Link"
-                  name="videoUrl"
-                  touched={touched.videoUrl}
-                  errors={errors.videoUrl}
                   width="h-[36px] w-[100%] rounded-[5px]"
                 />
 
@@ -223,6 +220,76 @@ const AddFeaturedForm: React.FC<AddFeaturedFormProps> = ({
                         {imageError && (
                           <div className="mt-2 text-sm text-red-600">
                             {imageError}
+                          </div>
+                        )}
+                      </section>
+                    </div>
+                  )}
+                </Dropzone>
+
+                <Dropzone
+                  accept={{
+                    "video/*": [".mp4", ".mov", ".avi"],
+                  }}
+                  onDropAccepted={(files) => {
+                    const file = files[0];
+
+                    console.log(file);
+
+                    setVideo(file);
+
+                    // Handle video file similarly, if needed
+                    setDisplayVideo(URL.createObjectURL(file));
+                  }}
+                  onDropRejected={() => {
+                    setVideoError("File size exceeds 10MB or not supported");
+                  }}
+                  // maxSize={10000000}
+                >
+                  {({ getRootProps, getInputProps, acceptedFiles }) => (
+                    <div className="">
+                      <section>
+                        <p className="text-[0.865rem] font-[500]">
+                          Thumbnail Image or Video
+                        </p>
+                        <div
+                          {...getRootProps()}
+                          className={cn(
+                            "border-[1px] py-2  cursor-pointer rounded-[10px] items-center justify-center px-2 border-neutral-200 w-[100%]",
+                            { "border-[#80F5BD] ": acceptedFiles.length > 0 }
+                          )}
+                        >
+                          <input
+                            {...getInputProps()}
+                            className="absolute"
+                            name="video"
+                          />
+                          <div className="flex items-center gap-3">
+                            <video
+                              src={displaVideo || (data?.videoUrl ?? "")}
+                              className="max-h-[100px] w-[100px]"
+                              controls
+                            />
+
+                            <div>
+                              <p className="text-[0.895rem]">Upload Video</p>
+
+                              {displaVideo ? (
+                                <div className="w-fit rounded-[5px] bg-neutral-200 px-3 py-2 text-xs leading-[1.4] tracking-[-0.02em]">
+                                  {acceptedFiles[0]?.name}
+                                </div>
+                              ) : (
+                                <div className="w-fit rounded-[10px] bg-neutral-200 px-3 py-2 text-xs leading-[1.4] tracking-[-0.02em] text-[#808084] mt-2">
+                                  No file Selected Yet
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {videoError && (
+                          <div className="mt-2 text-sm text-red-600">
+                            {videoError}
                           </div>
                         )}
                       </section>

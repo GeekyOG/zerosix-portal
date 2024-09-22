@@ -27,16 +27,22 @@ export const mainMenuOptions = [
     icon: <ArrowLeftRight size={16} />,
   },
 
-  {
-    text: "Featured",
-    url: "/dashboard/featured",
-    icon: <File size={16} />,
-  },
+  // {
+  //   text: "Featured",
+  //   url: "/dashboard/featured",
+  //   icon: <File size={16} />,
+  // },
   {
     text: "Portfolio",
     url: "/dashboard/portfolio",
     icon: <Store size={16} />,
   },
+
+  // {
+  //   text: "What we Offer",
+  //   url: "/dashboard/what-we-offer",
+  //   icon: <Store size={16} />,
+  // },
 
   {
     text: "Settings",

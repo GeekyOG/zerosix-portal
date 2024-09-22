@@ -66,11 +66,11 @@ function Dashboard() {
           value={overviewData?.portfolios ?? 0}
           handleClick={handleAddPortfolio}
         />
-        <DashboardBox
+        {/* <DashboardBox
           title={"Total Featured"}
           value={overviewData?.featuredWorks ?? 0}
           handleClick={handleAddFeatured}
-        />
+        /> */}
       </div>
       <div className="mt-[26px]">
         <div className="flex items-center justify-between text-[0.895rem] font-[500]">
