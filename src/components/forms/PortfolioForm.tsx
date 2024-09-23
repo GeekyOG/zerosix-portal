@@ -24,6 +24,17 @@ interface AddPortfolioFormProps {
   id?: string;
 }
 
+const Categories = [
+  "",
+  "Commercials",
+  "Discovery",
+  "Documentation",
+  "Events",
+  "Interview",
+  "Music",
+  "Showrell",
+];
+
 const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
   reset,
   callBackAction,
@@ -42,9 +53,12 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
   const [updatePortfolio, { isLoading: updateLoading }] =
     useUpdatePortfolioMutation();
 
+  const [category, setCategory] = useState("");
+
   useEffect(() => {
     if (id) {
       setDescription(data?.description);
+      setCategory(data?.category);
       getPortfolio(id)
         .unwrap()
         .then(() => {});
@@ -67,13 +81,17 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
             title: data?.title || "",
             description: data?.description || "",
             videoUrl: data?.videoUrl || "",
+            category: data?.category || "",
           }}
           onSubmit={(values, { resetForm }) => {
+            console.log(values);
+
             const formData = new FormData();
             formData.append("image", image);
             formData.append("title", values.title);
             formData.append("description", description);
             formData.append("videoUrl", values.videoUrl);
+            formData.append("category", category);
 
             if (id) {
               updatePortfolio({ body: formData, id })
@@ -146,6 +164,23 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
                   errors={errors.videoUrl}
                   width="h-[36px] w-[100%] rounded-[5px]"
                 />
+
+                <select
+                  name="category"
+                  required
+                  id=""
+                  className="border-[1px] px-[10px] py-[10px] outline-0"
+                  onChange={(e) => {
+                    setCategory(e.target.value);
+                  }}
+                >
+                  {data?.category && (
+                    <option value={data?.category}>{data?.category}</option>
+                  )}
+                  {Categories.map((category) => (
+                    <option value={category}>{category}</option>
+                  ))}
+                </select>
 
                 <textarea
                   className="h-[200px] w-[100%] rounded-[5px] p-[5px] border-[1px]"
