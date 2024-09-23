@@ -55,6 +55,8 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
 
   const [category, setCategory] = useState("");
 
+  const [type, setType] = useState("");
+
   useEffect(() => {
     if (id) {
       setDescription(data?.description);
@@ -92,6 +94,7 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
             formData.append("description", description);
             formData.append("videoUrl", values.videoUrl);
             formData.append("category", category);
+            formData.append("type", type);
 
             if (id) {
               updatePortfolio({ body: formData, id })
@@ -165,6 +168,7 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
                   width="h-[36px] w-[100%] rounded-[5px]"
                 />
 
+                <p>Category</p>
                 <select
                   name="category"
                   required
@@ -178,6 +182,20 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
                     <option value={data?.category}>{data?.category}</option>
                   )}
                   {Categories.map((category) => (
+                    <option value={category}>{category}</option>
+                  ))}
+                </select>
+                <p>Type</p>
+                <select
+                  name="type"
+                  required
+                  id=""
+                  className="border-[1px] px-[10px] py-[10px] outline-0"
+                  onChange={(e) => {
+                    setType(e.target.value);
+                  }}
+                >
+                  {["youtube", "vimeo"].map((category) => (
                     <option value={category}>{category}</option>
                   ))}
                 </select>
