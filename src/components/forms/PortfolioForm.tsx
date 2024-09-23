@@ -55,12 +55,13 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
 
   const [category, setCategory] = useState("");
 
-  const [type, setType] = useState("");
+  const [type, setType] = useState("youtube");
 
   useEffect(() => {
     if (id) {
       setDescription(data?.description);
       setCategory(data?.category);
+      setType(data?.type);
       getPortfolio(id)
         .unwrap()
         .then(() => {});
@@ -195,6 +196,7 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
                     setType(e.target.value);
                   }}
                 >
+                  <option value=""></option>
                   {["youtube", "vimeo"].map((category) => (
                     <option value={category}>{category}</option>
                   ))}
