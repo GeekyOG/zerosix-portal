@@ -99,7 +99,7 @@ function Settings() {
                           <div className="flex items-center gap-3">
                             {isSuccess ? (
                               <img
-                                src={display || data[0].imgUrl}
+                                src={display || data[0]?.imgUrl}
                                 className="max-h-[100px] w-[100px]"
                               />
                             ) : (
@@ -145,18 +145,18 @@ function Settings() {
           <div className=" max-w-[400px]">
             <Formik
               initialValues={{
-                instagram: socialData ? socialData[0].instagram ?? "" : null,
-                youtube: socialData ? socialData[0].youtube ?? "" : null,
-                twitter: socialData ? socialData[0].twitter ?? "" : null,
-                pinterest: socialData ? socialData[0].pinterest ?? "" : null,
+                instagram: socialData ? socialData[0]?.instagram ?? "" : null,
+                youtube: socialData ? socialData[0]?.youtube ?? "" : null,
+                twitter: socialData ? socialData[0]?.twitter ?? "" : null,
+                pinterest: socialData ? socialData[0]?.pinterest ?? "" : null,
               }}
               onSubmit={(values) => {
                 updateSocial({
                   id: 1,
-                  instagram: values.instagram,
-                  youtube: values.youtube,
-                  twitter: values.twitter,
-                  pinterest: values.pinterest,
+                  instagram: values?.instagram,
+                  youtube: values?.youtube,
+                  twitter: values?.twitter,
+                  pinterest: values?.pinterest,
                 })
                   .unwrap()
                   .then(() => {
@@ -170,7 +170,6 @@ function Settings() {
               {({ errors, touched, values }) => {
                 useEffect(() => {
                   values.instagram = socialData ? socialData[0]?.instagram : "";
-
                   values.youtube = socialData ? socialData[0]?.youtube : "";
                   values.twitter = socialData ? socialData[0]?.twitter : "";
                   values.pinterest = socialData ? socialData[0]?.pinterest : "";
