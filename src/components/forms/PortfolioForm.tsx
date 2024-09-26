@@ -26,13 +26,15 @@ interface AddPortfolioFormProps {
 
 const Categories = [
   "",
-  "Commercials",
-  "Discovery",
-  "Documentation",
-  "Events",
-  "Interview",
-  "Music",
-  "Showrell",
+  "DOCUMENTARY",
+  "CONCERTS",
+  "EVENTS",
+  "FOOD",
+  "LANDSCAPE",
+  "COMMERCIAL",
+  "PHOTOGRAPHY",
+  "FASHION",
+  "LIFESTYLE",
 ];
 
 const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
