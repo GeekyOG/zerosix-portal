@@ -30,13 +30,14 @@ function AddBrandForm({ callBackAction, id, reset }: AddBrandFormProps) {
 
   useEffect(() => {
     if (id) {
+      setDisplay(`https://zerosix-backend.onrender.com/api/v1/brands/${id}`);
+
       getBrand(id)
         .unwrap()
-        .then((brand) => {
-          setDisplay(brand.imgUrl);
-        });
+        .then((brand) => {});
     }
   }, [id, reset]);
+
   return (
     <div>
       <Formik
@@ -44,6 +45,11 @@ function AddBrandForm({ callBackAction, id, reset }: AddBrandFormProps) {
           image: "",
         }}
         onSubmit={(values, { resetForm }) => {
+          if (!image) {
+            setImageError("Please upload an image");
+            return;
+          }
+
           const formData = new FormData();
           formData.append("image", image);
 

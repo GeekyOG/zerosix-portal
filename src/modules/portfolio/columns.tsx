@@ -5,10 +5,18 @@ import React from "react";
 export const columns: ColumnsType = [
   {
     title: "Thumbnail Image",
-    dataIndex: "imgUrl",
-    key: "imgUrl",
-    render(value) {
-      return <img src={value} alt="thumbnail" width={60} />;
+    dataIndex: "image",
+    key: "image",
+    render(_, value) {
+      console.log(value);
+
+      return (
+        <img
+          src={`https://zerosix-backend.onrender.com/api/v1/portfolio/image/${value.id}`}
+          alt="thumbnail"
+          width={60}
+        />
+      );
     },
   },
   {

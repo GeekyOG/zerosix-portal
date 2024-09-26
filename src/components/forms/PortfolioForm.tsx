@@ -62,6 +62,10 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
       setDescription(data?.description);
       setCategory(data?.category);
       setType(data?.type);
+      setDisplay(
+        `https://zerosix-backend.onrender.com/api/v1/portfolio/image/${id}`
+      );
+
       getPortfolio(id)
         .unwrap()
         .then(() => {});
@@ -268,7 +272,7 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
 
                               {display ? (
                                 <div className=" w-fit rounded-[5px] bg-neutral-200 px-3 py-2 text-xs leading-[1.4] tracking-[-0.02em]">
-                                  {acceptedFiles[0].name}
+                                  {acceptedFiles[0]?.name}
                                 </div>
                               ) : (
                                 <div className=" w-fit rounded-[10px] bg-neutral-200 px-3 py-2 text-xs leading-[1.4] tracking-[-0.02em] text-[#808084] mt-2">
