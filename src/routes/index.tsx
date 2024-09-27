@@ -11,6 +11,7 @@ import Portfolio from "../pages/Portfolio";
 import Settings from "../pages/Settings";
 import Applayout from "../layout/Applayout";
 import WhatWeOffer from "../pages/WhatWeOffer";
+import Images from "../pages/Images";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/portfolio",
         element: <Portfolio />,
+      },
+      {
+        path: "/dashboard/images",
+        element: <Images />,
       },
       {
         path: "/dashboard/what-we-offer",

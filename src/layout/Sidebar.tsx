@@ -27,23 +27,18 @@ export const mainMenuOptions = [
     icon: <ArrowLeftRight size={16} />,
   },
 
-  // {
-  //   text: "Featured",
-  //   url: "/dashboard/featured",
-  //   icon: <File size={16} />,
-  // },
   {
-    text: "Portfolio",
+    text: "Videos",
     url: "/dashboard/portfolio",
     icon: <Store size={16} />,
   },
 
-  // {
-  //   text: "What we Offer",
-  //   url: "/dashboard/what-we-offer",
-  //   icon: <Store size={16} />,
-  // },
-
+  {
+    text: "Images",
+    url: "/dashboard/images",
+    icon: <Store size={16} />,
+  },
+  ,
   {
     text: "Settings",
     url: "/dashboard/settings",
@@ -84,7 +79,7 @@ function Sidebar() {
           <div className="px-[28px] py-[14px]">
             <p className="text-[0.625rem] font-[700]">MAIN MENU</p>
           </div>
-          {mainMenuOptions.map((item) => (
+          {mainMenuOptions.map((item: any) => (
             <SidebarTab
               key={item.text}
               item={item.text}

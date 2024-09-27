@@ -3,6 +3,7 @@ import { Button, Drawer } from "antd";
 import AddBrandForm from "../forms/AddBrandForm";
 import AddPortfolioForm from "../forms/PortfolioForm";
 import AddFeaturedForm from "../forms/AddFeatured";
+import AddImageForm from "../forms/ImageForm";
 
 interface DashboardDrawerProps {
   id?: string;
@@ -54,6 +55,9 @@ const DashboardDrawer: React.FC<DashboardDrawerProps> = ({
             id={id}
             callBackAction={callBackAction}
           />
+        )}
+        {whatForm == "image" && (
+          <AddImageForm reset={open} id={id} callBackAction={callBackAction} />
         )}
       </Drawer>
     </>
