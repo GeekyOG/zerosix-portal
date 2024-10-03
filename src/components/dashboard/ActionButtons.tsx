@@ -6,6 +6,7 @@ import { useDeleteBrandMutation } from "../../api/brandsApi";
 import { toast } from "react-toastify";
 import { useDeleteFeaturedMutation } from "../../api/featured";
 import { useDeletePortfolioMutation } from "../../api/portfolio";
+import { useDeleteWorkMutation } from "../../api/imageApi";
 // import EditCategory from "../../modules/products/EditCategory";
 interface ActionButtonsProps {
   id: string;
@@ -28,6 +29,9 @@ function ActionButtons({ id, type, callBackAction }: ActionButtonsProps) {
 
   const [deletePortfolio, { isLoading: deletePortfolioLoading }] =
     useDeletePortfolioMutation();
+
+  const [deleteWork, { isLoading: deleteWorkLoading }] =
+    useDeleteWorkMutation();
 
   const handleDeleteBrandDialog = () => {
     setShowDialog(true);
@@ -90,6 +94,27 @@ function ActionButtons({ id, type, callBackAction }: ActionButtonsProps) {
       });
   };
 
+  const handleDeleteImageDialog = () => {
+    setShowDialog(true);
+    setDialogTitle("Delete Work Image Item");
+    setDialogContent(
+      "Deleting this Image item, this Image item would would not longer be displayed on your website. Please note this action cannot be undone"
+    );
+    setDialogBtnText("Delete Image Item");
+  };
+
+  const handleDeleteImage = () => {
+    deleteWork(id)
+      .then(() => {
+        toast.success("Action Successful");
+        callBackAction && callBackAction();
+        setShowDialog(true);
+      })
+      .catch(() => {
+        toast.error("Action Failed");
+      });
+  };
+
   return (
     <>
       {type === "Featured" && (
@@ -124,6 +149,17 @@ function ActionButtons({ id, type, callBackAction }: ActionButtonsProps) {
           />
         </>
       )}
+
+      {type == "image" && (
+        <>
+          <TableActionButtons
+            handleEdit={() => {
+              setDrawerOpen(true);
+            }}
+            handleDelete={handleDeleteImageDialog}
+          />
+        </>
+      )}
       <DashboardDrawer
         id={id}
         callBackAction={() => {
@@ -143,7 +179,8 @@ function ActionButtons({ id, type, callBackAction }: ActionButtonsProps) {
           isLoading={
             deleteBrandLoading ||
             deleteFeaturedLoading ||
-            deletePortfolioLoading
+            deletePortfolioLoading ||
+            deleteWorkLoading
           }
           type={"delete"}
           image={"/delete.svg"}
@@ -153,6 +190,7 @@ function ActionButtons({ id, type, callBackAction }: ActionButtonsProps) {
               handleDeleteFeatured) ||
             (dialogTitle == "Delete Work Portfolio Item" &&
               handleDeletePortfolio) ||
+            (dialogTitle == "Delete Work Image Item" && handleDeleteImage) ||
             function (): void {
               throw new Error("Function not implemented.");
             }
