@@ -12,7 +12,7 @@ export const columns: ColumnsType = [
 
       return (
         <img
-          src={`https://zerosix-backend.onrender.com/api/v1/brands/${value.id}`}
+          src={`https://https://zerosix.aoudit.com/api/v1/brands/${value.id}`}
           alt="thumbnail"
           width={60}
         />

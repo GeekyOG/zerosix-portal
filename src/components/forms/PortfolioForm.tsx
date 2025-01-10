@@ -65,7 +65,7 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
       setCategory(data?.category);
       setType(data?.type);
       setDisplay(
-        `https://zerosix-backend.onrender.com/api/v1/portfolio/image/${id}`
+        `https://https://zerosix.aoudit.com/api/v1/portfolio/image/${id}`
       );
 
       getPortfolio(id)
