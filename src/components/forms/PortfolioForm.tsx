@@ -64,9 +64,7 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
       setDescription(data?.description);
       setCategory(data?.category);
       setType(data?.type);
-      setDisplay(
-        `https://https://zerosix.aoudit.com/api/v1/portfolio/image/${id}`
-      );
+      setDisplay(`https://zerosix.aoudit.com/api/v1/portfolio/image/${id}`);
 
       getPortfolio(id)
         .unwrap()

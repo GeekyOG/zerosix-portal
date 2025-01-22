@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 import { logout } from "../utils/logout";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://https://zerosix.aoudit.com/api/v1",
+  baseUrl: "https://zerosix.aoudit.com/api/v1",
   // baseUrl: "http://localhost:5000/api/v1",
   prepareHeaders: (headers) => {
     // Retrieve the token from cookies

@@ -60,9 +60,7 @@ const AddImageForm: React.FC<AddImageFormProps> = ({
       setDescription(data?.description);
       setCategory(data?.category);
 
-      setDisplay(
-        `https://https://zerosix.aoudit.com/api/v1/portfolio/image/${id}`
-      );
+      setDisplay(`https://zerosix.aoudit.com/api/v1/portfolio/image/${id}`);
 
       getPortfolio(id)
         .unwrap()
