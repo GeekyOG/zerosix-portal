@@ -27,6 +27,13 @@ export const columns: ColumnsType = [
   },
 
   {
+    title: "Position",
+    dataIndex: "position",
+    key: "position",
+    render: (value) => <p>{value ?? ""}</p>,
+  },
+
+  {
     title: "Date added",
     dataIndex: "createdAt",
     key: "createdAt",

@@ -28,6 +28,11 @@ export const mainMenuOptions = [
   },
 
   {
+    text: "Category",
+    url: "/dashboard/category",
+    icon: <Store size={16} />,
+  },
+  {
     text: "Videos",
     url: "/dashboard/portfolio",
     icon: <Store size={16} />,

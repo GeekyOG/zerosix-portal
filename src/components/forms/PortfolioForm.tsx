@@ -17,6 +17,7 @@ import {
   useLazyGetPortfolioQuery,
   useUpdatePortfolioMutation,
 } from "../../api/portfolio";
+import { useGetCategoriesQuery } from "../../api/categoryApi";
 
 interface AddPortfolioFormProps {
   reset: boolean;
@@ -46,6 +47,7 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
   const [image, setImage] = useState<any>("");
   const [display, setDisplay] = useState("");
   const [description, setDescription] = useState("");
+  const { isFetching, data: categories } = useGetCategoriesQuery("");
 
   const [addPortfolio, { isLoading }] = useAddPortfolioMutation();
 
@@ -89,7 +91,10 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
             description: data?.description || "",
             videoUrl: data?.videoUrl || "",
             category: data?.category || "",
+            position: data?.position || "",
+            type: data?.type || "",
           }}
+          enableReinitialize
           onSubmit={(values, { resetForm }) => {
             console.log(values);
 
@@ -100,6 +105,7 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
             formData.append("videoUrl", values.videoUrl);
             formData.append("category", category);
             formData.append("type", type);
+            formData.append("position", values.position);
 
             if (id) {
               updatePortfolio({ body: formData, id })
@@ -141,6 +147,9 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
               values.title = data?.title;
               values.description = data?.description;
               values.videoUrl = data?.videoUrl;
+              values.category = data?.category;
+              values.position = data?.position;
+              values.type = data?.type;
 
               if (!reset) {
                 resetForm();
@@ -183,11 +192,9 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
                     setCategory(e.target.value);
                   }}
                 >
-                  {data?.category && (
-                    <option value={data?.category}>{data?.category}</option>
-                  )}
-                  {Categories.map((category) => (
-                    <option value={category}>{category}</option>
+                  <option>Select Category</option>
+                  {categories?.map((category) => (
+                    <option value={category?.name}>{category?.name}</option>
                   ))}
                 </select>
                 <p>Type</p>
@@ -292,6 +299,15 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
                     </div>
                   )}
                 </Dropzone>
+                <Input
+                  title="Position"
+                  name="position"
+                  touched={touched.position}
+                  errors={errors.position}
+                  placeholder="Enter position"
+                  width="h-[36px] w-[100%] rounded-[5px]"
+                />
+
                 <Button isLoading={isLoading || updateLoading}>
                   Add Portfolio
                 </Button>

@@ -8,6 +8,7 @@ import { portfolioApi } from "../api/portfolio";
 import { logoApi } from "../api/logoApi";
 import { socialApi } from "../api/socialApi";
 import { imageApi } from "../api/imageApi";
+import { categoriesApi } from "../api/categoryApi";
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
     [logoApi.reducerPath]: logoApi.reducer,
     [socialApi.reducerPath]: socialApi.reducer,
     [imageApi.reducerPath]: imageApi.reducer,
+    [categoriesApi.reducerPath]: categoriesApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -30,7 +32,8 @@ export const store = configureStore({
       brandsApi.middleware,
       logoApi.middleware,
       socialApi.middleware,
-      imageApi.middleware
+      imageApi.middleware,
+      categoriesApi.middleware
     ),
 });
 

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useDeleteFeaturedMutation } from "../../api/featured";
 import { useDeletePortfolioMutation } from "../../api/portfolio";
 import { useDeleteWorkMutation } from "../../api/imageApi";
+import { useDeleteCategoryMutation } from "../../api/categoryApi";
 // import EditCategory from "../../modules/products/EditCategory";
 interface ActionButtonsProps {
   id: string;
@@ -23,6 +24,9 @@ function ActionButtons({ id, type, callBackAction }: ActionButtonsProps) {
 
   const [deleteBrand, { isLoading: deleteBrandLoading }] =
     useDeleteBrandMutation();
+
+  const [deleteCategory, { isLoading: deleteCategoryLoading }] =
+    useDeleteCategoryMutation();
 
   const [deleteFeatured, { isLoading: deleteFeaturedLoading }] =
     useDeleteFeaturedMutation();
@@ -115,8 +119,38 @@ function ActionButtons({ id, type, callBackAction }: ActionButtonsProps) {
       });
   };
 
+  const handleDeleteCategory = () => {
+    deleteCategory(id)
+      .then(() => {
+        toast.success("Action Successful");
+        callBackAction && callBackAction();
+      })
+      .catch(() => {
+        toast.error("Action Failed");
+      });
+  };
+
+  const handleCategoryDialog = () => {
+    setShowDialog(true);
+    setDialogTitle("Delete Category Permanently");
+    setDialogContent(
+      "Deleting this category work, this category work would would not longer be displayed on your website. Please note this action cannot be undone"
+    );
+    setDialogBtnText("Delete category Work");
+  };
+
   return (
     <>
+      {type === "Category" && (
+        <>
+          <TableActionButtons
+            handleEdit={() => {
+              setDrawerOpen(true);
+            }}
+            handleDelete={handleCategoryDialog}
+          />
+        </>
+      )}
       {type === "Featured" && (
         <>
           <TableActionButtons
@@ -180,12 +214,15 @@ function ActionButtons({ id, type, callBackAction }: ActionButtonsProps) {
             deleteBrandLoading ||
             deleteFeaturedLoading ||
             deletePortfolioLoading ||
-            deleteWorkLoading
+            deleteWorkLoading ||
+            deleteCategoryLoading
           }
           type={"delete"}
           image={"/delete.svg"}
           action={
             (dialogTitle == "Delete Brand Permanently" && handleDeleteBrand) ||
+            (dialogTitle == "Delete Category Permanently" &&
+              handleDeleteCategory) ||
             (dialogTitle == "Delete Featured Work Permanently" &&
               handleDeleteFeatured) ||
             (dialogTitle == "Delete Work Portfolio Item" &&

@@ -4,6 +4,7 @@ import AddBrandForm from "../forms/AddBrandForm";
 import AddPortfolioForm from "../forms/PortfolioForm";
 import AddFeaturedForm from "../forms/AddFeatured";
 import AddImageForm from "../forms/ImageForm";
+import AddCategoryForm from "../forms/AddCatgoryForm";
 
 interface DashboardDrawerProps {
   id?: string;
@@ -34,11 +35,19 @@ const DashboardDrawer: React.FC<DashboardDrawerProps> = ({
         title={
           (whatForm == "Brand" && "Add Brand") ||
           (whatForm == "Portfolio" && "Add Portfolio") ||
-          (whatForm == "Featured" && "Add Featured")
+          (whatForm == "Featured" && "Add Featured") ||
+          (whatForm == "Category" && "Add Category")
         }
         onClose={onClose}
         open={open}
       >
+        {whatForm == "Category" && (
+          <AddCategoryForm
+            reset={open}
+            callBackAction={callBackAction}
+            id={id}
+          />
+        )}
         {whatForm == "Brand" && (
           <AddBrandForm reset={open} callBackAction={callBackAction} id={id} />
         )}

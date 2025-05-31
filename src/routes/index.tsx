@@ -12,6 +12,7 @@ import Settings from "../pages/Settings";
 import Applayout from "../layout/Applayout";
 import WhatWeOffer from "../pages/WhatWeOffer";
 import Images from "../pages/Images";
+import Category from "../pages/Category";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
         element: <Brands />,
       },
       {
+        path: "/dashboard/category",
+        element: <Category />,
+      },
+      {
         path: "/dashboard/featured",
         element: <Featured />,
       },
@@ -47,6 +52,7 @@ const router = createBrowserRouter([
         path: "/dashboard/portfolio",
         element: <Portfolio />,
       },
+
       {
         path: "/dashboard/images",
         element: <Images />,
