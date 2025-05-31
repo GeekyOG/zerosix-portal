@@ -1,22 +1,17 @@
 import { Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import Button from "../../ui/Button";
-import Dropzone from "react-dropzone";
 import { cn } from "../../utils/cn";
-import { Image } from "lucide-react";
 import Input from "../input/Input";
 import { toast } from "react-toastify";
 
 import {
-  useAddPortfolioMutation,
-  useLazyGetPortfolioQuery,
-  useUpdatePortfolioMutation,
-} from "../../api/portfolio";
-import axios from "axios";
-import {
   useAddImageToWorkMutation,
   useAddWorkMutation,
+  useLazyGetWorkQuery,
+  useUpdateWorkMutation,
 } from "../../api/imageApi";
+import { useGetCategoriesQuery } from "../../api/categoryApi";
 
 interface AddImageFormProps {
   reset: boolean;
@@ -24,100 +19,76 @@ interface AddImageFormProps {
   id?: string;
 }
 
-const Categories = [
-  "",
-  "DOCUMENTARY",
-  "CONCERTS",
-  "EVENTS",
-  "FOOD",
-  "LANDSCAPE",
-  "COMMERCIAL",
-  "PHOTOGRAPHY",
-  "FASHION",
-  "LIFESTYLE",
-];
-
 const AddImageForm: React.FC<AddImageFormProps> = ({
   reset,
   callBackAction,
   id,
 }) => {
-  const [imageError, setImageError] = useState("");
+  const [, setImageError] = useState("");
   const [image, setImage] = useState<any>("");
-  const [display, setDisplay] = useState("");
-  const [description, setDescription] = useState("");
+
+  const { isFetching, data: categories } = useGetCategoriesQuery("");
 
   const [getPortfolio, { data, isLoading: featuredLoading }] =
-    useLazyGetPortfolioQuery();
+    useLazyGetWorkQuery();
 
   const [updatePortfolio, { isLoading: updateLoading }] =
-    useUpdatePortfolioMutation();
-
-  const [category, setCategory] = useState("");
-
-  useEffect(() => {
-    if (id) {
-      setDescription(data?.description);
-      setCategory(data?.category);
-
-      setDisplay(`https://zerosix.aoudit.com/api/v1/portfolio/image/${id}`);
-
-      getPortfolio(id)
-        .unwrap()
-        .then(() => {});
-    }
-  }, [id, featuredLoading, reset, data]);
+    useUpdateWorkMutation();
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [message, setMessage] = useState("");
-
-  // Handle file selection
-  const handleFileChange = (e) => {
-    setSelectedFiles(e.target.files);
-  };
 
   const [addWork, { isLoading: workLoading }] = useAddWorkMutation();
   const [addImageToWork, { isLoading: addImageToWorkLoading }] =
     useAddImageToWorkMutation();
 
+  useEffect(() => {
+    if (id) {
+      getPortfolio(id);
+    }
+  }, [id]);
+
+  const handleFileChange = (e) => {
+    setSelectedFiles(e.target.files);
+  };
+
   return (
     <div>
-      {featuredLoading && id && (
+      {featuredLoading && id ? (
         <img
           src="/dark-spinner.svg"
           alt=""
           className={cn("h-[30px] w-[30px] mx-auto mt-[100px]")}
         />
-      )}
-      {!featuredLoading && (
+      ) : (
         <Formik
           initialValues={{
-            title: data?.title || "",
+            title: data?.name || "",
             category: data?.category || "",
+            position: data?.position || "",
           }}
+          enableReinitialize
           onSubmit={async (values, { resetForm }) => {
-            const formData = new FormData();
-            formData.append("category", category);
-            formData.append("name", values.title);
-
             if (id) {
-              updatePortfolio({ body: formData, id })
+              // Edit mode
+              updatePortfolio({
+                id,
+                body: {
+                  name: values.title,
+                  category: values.category,
+                  position: values.position,
+                },
+              })
                 .unwrap()
                 .then(() => {
-                  resetForm();
-                  setDisplay("");
-                  setDescription("");
-                  toast.success("Action successful");
-                  if (callBackAction) {
-                    callBackAction();
-                  }
+                  toast.success("Work updated successfully");
+                  if (callBackAction) callBackAction();
                 })
                 .catch((err) => {
                   toast.error(err.message ?? "Something went wrong");
                 });
-            }
-
-            if (!id) {
+            } else {
+              // Add mode
               if (selectedFiles?.length === 0) {
                 setMessage("Please select some images to upload.");
                 return;
@@ -125,46 +96,53 @@ const AddImageForm: React.FC<AddImageFormProps> = ({
 
               addWork({
                 name: values.title,
-                category: category,
+                category: values.category,
               })
                 .unwrap()
-                .then(async (data) => {
-                  const uploadedImages = await Promise.all(
-                    Array.from(selectedFiles).map(async (file) => {
-                      // Create a new FormData for each file
+                .then(async (work) => {
+                  await Promise.all(
+                    Array.from(selectedFiles).map((file) => {
                       const formData = new FormData();
-
-                      // Append id and image to FormData
-                      formData.append("id", data.id);
+                      formData.append("category", values.category);
+                      formData.append("id", work.id);
                       formData.append("image", file);
+                      formData.append("position", values.position);
+                      formData.append("name", values.title);
 
-                      // Send request to addImageToWork
-                      return addImageToWork({ body: formData, id: data.id });
+                      return addImageToWork({ body: formData, id: work.id });
                     })
                   );
-                })
-                .then(() => {
-                  setCategory("");
+
+                  getPortfolio("");
+                  resetForm();
                   setSelectedFiles([]);
                   setMessage("");
+                  toast.success("Work created successfully");
+                })
+                .catch((err) => {
+                  toast.error(err.message ?? "Image upload failed");
                 });
             }
           }}
         >
-          {({ errors, touched, resetForm, values }) => {
+          {({ errors, touched, resetForm, values, setFieldValue }) => {
             useEffect(() => {
-              values.title = data?.title;
+              if (data && reset) {
+                resetForm({
+                  values: {
+                    title: data.name || "",
+                    category: data.category || "",
+                    position: data.position || "",
+                  },
+                });
+              }
 
               if (!reset) {
                 resetForm();
-                setDescription("");
                 setImage("");
-                setDisplay("");
                 setImageError("");
               }
-            }, [reset, resetForm, data]);
-
-            console.log(image);
+            }, [reset, data]);
 
             return (
               <Form
@@ -184,24 +162,37 @@ const AddImageForm: React.FC<AddImageFormProps> = ({
                 <select
                   name="category"
                   required
-                  id=""
                   className="border-[1px] px-[10px] py-[10px] outline-0"
-                  onChange={(e) => {
-                    setCategory(e.target.value);
-                  }}
+                  onChange={(e) => setFieldValue("category", e.target.value)}
+                  value={values.category}
                 >
-                  {data?.category && (
-                    <option value={data?.category}>{data?.category}</option>
-                  )}
-                  {Categories.map((category) => (
-                    <option value={category}>{category}</option>
+                  <option value="">Select Category</option>
+                  {categories?.map((cat) => (
+                    <option key={cat.name} value={cat.name}>
+                      {cat.name}
+                    </option>
                   ))}
                 </select>
-                <input
-                  type="file"
-                  multiple
-                  onChange={handleFileChange}
-                  accept="image/*"
+
+                {!id && (
+                  <>
+                    <input
+                      type="file"
+                      multiple
+                      onChange={handleFileChange}
+                      accept="image/*"
+                    />
+                    {message && <p className="text-red-500">{message}</p>}
+                  </>
+                )}
+
+                <Input
+                  title="Position"
+                  name="position"
+                  touched={touched.position}
+                  errors={errors.position}
+                  placeholder="Enter position"
+                  width="h-[36px] w-[100%] rounded-[5px]"
                 />
 
                 <Button
@@ -209,7 +200,7 @@ const AddImageForm: React.FC<AddImageFormProps> = ({
                     workLoading || addImageToWorkLoading || updateLoading
                   }
                 >
-                  Add Image
+                  {id ? "Update Work" : "Add Image"}
                 </Button>
               </Form>
             );

@@ -33,7 +33,12 @@ export const columns: ColumnsType = [
     key: "category",
     render: (value) => <p>{value ?? ""}</p>,
   },
-
+  {
+    title: "Position",
+    dataIndex: "position",
+    key: "position",
+    render: (value) => <p>{value ?? ""}</p>,
+  },
   {
     title: "Date added",
     dataIndex: "createdAt",

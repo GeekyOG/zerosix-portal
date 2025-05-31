@@ -9,7 +9,7 @@ import { logout } from "../utils/logout";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://zerosix.aoudit.com/api/v1",
-  // baseUrl: "http://localhost:5000/api/v1",
+  // baseUrl: "http://localhost:3000/api/v1",
   prepareHeaders: (headers) => {
     // Retrieve the token from cookies
     const token = Cookies.get("authToken");
