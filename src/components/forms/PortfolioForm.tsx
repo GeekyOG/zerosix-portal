@@ -62,6 +62,15 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
   const [type, setType] = useState("youtube");
 
   useEffect(() => {
+    if (id && data) {
+      setDescription(data?.description || "");
+      setCategory(data?.category || "");
+      setType(data?.type || "");
+      setDisplay(`https://zerosix.aoudit.com/api/v1/portfolio/image/${id}`);
+    }
+  }, [id, data]);
+
+  useEffect(() => {
     if (id) {
       setDescription(data?.description);
       setCategory(data?.category);
@@ -191,6 +200,7 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
                   onChange={(e) => {
                     setCategory(e.target.value);
                   }}
+                  value={category}
                 >
                   <option>Select Category</option>
                   {categories?.map((category) => (
@@ -206,6 +216,7 @@ const AddPortfolioForm: React.FC<AddPortfolioFormProps> = ({
                   onChange={(e) => {
                     setType(e.target.value);
                   }}
+                  value={type}
                 >
                   <option value=""></option>
                   {["youtube", "vimeo"].map((category) => (
