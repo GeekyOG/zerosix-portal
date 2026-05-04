@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Container from "../ui/Container";
 import { ArrowRight } from "lucide-react";
-import DashboardTable from "../components/dashboard/DashboardTable";
 import { columns } from "../modules/portfolio/columns";
 import DashboardDrawer from "../components/dashboard/Drawer";
 import Button from "../ui/Button";
-import { useLazyGetAllPortfolioQuery } from "../api/portfolio";
+import {
+  useLazyGetAllPortfolioQuery,
+  useUpdatePortfolioMutation,
+  useUpdatePortfolioPositionMutation,
+} from "../api/portfolio";
+import DashboardTable from "../components/dashboard/DragableDashboardTable";
 
 function Portfolio() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -13,6 +17,16 @@ function Portfolio() {
     setDrawerOpen(true);
   };
 
+  const [updatePortfolioPosition] = useUpdatePortfolioPositionMutation();
+
+  const handlePositionUpdate = async (
+    id: string | number,
+    position: number,
+  ) => {
+    console.log(id, position, "poi");
+
+    await updatePortfolioPosition({ id, position }).unwrap();
+  };
   const [getAllPortfolio, { isFetching, data }] = useLazyGetAllPortfolioQuery();
 
   useEffect(() => {
@@ -40,6 +54,7 @@ function Portfolio() {
           isFetching={isFetching}
           type="Portfolio"
           callBackAction={handleGetPortfolio}
+          onPositionUpdate={handlePositionUpdate}
         />
       </div>
       <DashboardDrawer

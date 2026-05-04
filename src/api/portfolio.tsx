@@ -32,7 +32,13 @@ export const portfolioApi = createApi({
         body: body,
       }),
     }),
-
+    updatePortfolioPosition: builder.mutation({
+      query: ({ id, position }) => ({
+        url: `portfolio/${id}/position`,
+        method: "PATCH",
+        body: { position },
+      }),
+    }),
     deletePortfolio: builder.mutation({
       query: (id) => ({
         url: `portfolio/${id}`,
@@ -50,4 +56,5 @@ export const {
   useLazyGetAllPortfolioQuery,
   useLazyGetPortfolioQuery,
   useUpdatePortfolioMutation,
+  useUpdatePortfolioPositionMutation,
 } = portfolioApi;

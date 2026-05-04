@@ -8,8 +8,6 @@ export const columns: ColumnsType = [
     dataIndex: "image",
     key: "image",
     render(_, value) {
-      console.log(value);
-
       return (
         <img
           src={`https://zerosix.aoudit.com/api/v1/portfolio/image/${value.id}`}
