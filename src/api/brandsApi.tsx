@@ -33,6 +33,14 @@ export const brandsApi = createApi({
       }),
     }),
 
+    updateBrandPosition: builder.mutation({
+      query: ({ id, position }) => ({
+        url: `brands/${id}/position`,
+        method: "PATCH",
+        body: { position },
+      }),
+    }),
+
     deleteBrand: builder.mutation({
       query: (id) => ({
         url: `brands/${id}`,
@@ -49,4 +57,5 @@ export const {
   useDeleteBrandMutation,
   useUpdateBrandMutation,
   useGetBrandQuery,
+  useUpdateBrandPositionMutation,
 } = brandsApi;

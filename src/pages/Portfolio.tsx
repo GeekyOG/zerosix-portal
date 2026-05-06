@@ -23,8 +23,6 @@ function Portfolio() {
     id: string | number,
     position: number,
   ) => {
-    console.log(id, position, "poi");
-
     await updatePortfolioPosition({ id, position }).unwrap();
   };
   const [getAllPortfolio, { isFetching, data }] = useLazyGetAllPortfolioQuery();

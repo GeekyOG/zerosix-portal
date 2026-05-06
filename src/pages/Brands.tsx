@@ -1,15 +1,21 @@
 import { ArrowRight } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import DashboardTable from "../components/dashboard/DashboardTable";
 import Container from "../ui/Container";
 import { columns } from "../modules/brands/columns";
 import Button from "../ui/Button";
 import DashboardDrawer from "../components/dashboard/Drawer";
-import { useGetBrandsQuery, useLazyGetBrandQuery } from "../api/brandsApi";
+import {
+  useGetBrandsQuery,
+  useLazyGetBrandQuery,
+  useUpdateBrandPositionMutation,
+} from "../api/brandsApi";
+import DashboardTable from "../components/dashboard/DragableDashboardTable";
 
 function Brands() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [whatForm, setWhatForm] = useState("");
+  const [updateBrandPosition] = useUpdateBrandPositionMutation();
+
   const handleAddBrand = () => {
     setDrawerOpen(true);
     setWhatForm("Brand");
@@ -24,6 +30,13 @@ function Brands() {
   const handleGetBrands = () => {
     getBrands("");
     setDrawerOpen(false);
+  };
+
+  const handlePositionUpdate = async (
+    id: string | number,
+    position: number,
+  ) => {
+    await updateBrandPosition({ id, position }).unwrap();
   };
 
   return (
@@ -43,6 +56,7 @@ function Brands() {
           isFetching={isFetching}
           type={"Brand"}
           callBackAction={handleGetBrands}
+          onPositionUpdate={handlePositionUpdate}
         />
       </div>
 
