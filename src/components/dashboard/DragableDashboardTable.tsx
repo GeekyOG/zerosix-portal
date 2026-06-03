@@ -155,6 +155,7 @@ function DashboardTable({
         <Table
           columns={columnWithAction}
           dataSource={dataSource}
+          pagination={false}
           className="w-[100%] border-[1px]"
           loading={isFetching}
           rowKey="id"
